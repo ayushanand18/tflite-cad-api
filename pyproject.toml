@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "team-beat-ml-api"
+version = "1.0"
+description = "Team BEAT ML API deployment"
+authors = ["Ayush Anand"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flask = "2.1.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
