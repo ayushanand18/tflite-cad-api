@@ -5,8 +5,13 @@ app = Flask(__name__)
 
 @app.route('/predict', methods=['GET'])
 def predict():
-    query = request.args.get('query')
-    res = prediction.process(query)
+    age = request.args.get('age')
+    sex = request.args.get('sex')
+    trestbps = request.args.get('trestbps')
+    chol = request.args.get('chol')
+    fbs = request.args.get('fbs')
+
+    res = prediction.predict(age=age, sex=sex, trestbps=trestbps, chol=chol, fbs=fbs)
     return jsonify(result=res)
 
 if __name__ == '__main__':

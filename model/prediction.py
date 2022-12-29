@@ -1,29 +1,22 @@
-def process(query):
-    # write pre-processing code here
-    return predict(query)
+import tensorflow as tf
+from tensorflow import keras
 
-def predict(things):
-    interpreter = tf.lite.Interpreter(model_path = ".tflite")
-    interpreter.allocate_tensors()
-    
-    # get the input and output details
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
-    
-    # set the input data
-    input_shape = input_details[0]['shape']
-    input_data = data
-    interpreter.set_tensor(input_details[0]['index'], input_data)
+model = tf.keras.models.load_model('./model/cad_classifier')
 
-    # predict
-    interpreter.invoke()
-
-    # print the output
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-    print(result(output_data))
+def predict(age, sex, trestbps, chol, fbs):
+    sample = {
+        "age":	float(age),
+        'sex': float(sex),
+        'trestbps': float(trestbps),
+        'chol': float(chol),
+        'fbs': float(fbs),
+    }
+    input_dict = {name: tf.convert_to_tensor([value]) for name, value in sample.items()}
+    predictions = model.predict(input_dict)
+    return result(tf.nn.sigmoid(predictions[0]))
 
 def result(data):
     if data[0]>0.5:
-        return (True, data[0])
+        return (True, data[0].numpy().tolist())
     else:
-        return(False, 1-data[0])
+        return(False, 1-data[0].numpy().tolist())
